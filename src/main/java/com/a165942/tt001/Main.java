@@ -1,4 +1,4 @@
-package com.a165942.aulatt001;
+package com.a165942.tt001;
 
 public class Main {
 
@@ -6,7 +6,7 @@ public class Main {
 //        ClienteDAO.getInstance().create("Cleisson", "Rua dos bobos", "999999999",;
 //                "15132090", "@.com");
 
-        AnimalDAO.getInstance().create("Nino","2003","m",1,1);
+//        AnimalDAO.getInstance().create("Nino","2003","m",1,1);
 //        Animal a2 = new Animal(2,"Tinoco",15,'m');
         
         Cliente c1 = ClienteDAO.getInstance().retrieveById(1);

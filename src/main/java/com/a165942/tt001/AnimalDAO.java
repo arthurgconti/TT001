@@ -1,6 +1,6 @@
-package com.a165942.aulatt001;
+package com.a165942.tt001;
 
-import static com.a165942.aulatt001.DAO.getConnection;
+import static com.a165942.tt001.DAO.getConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
