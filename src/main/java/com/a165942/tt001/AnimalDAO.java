@@ -76,6 +76,12 @@ public class AnimalDAO extends DAO {
         List<Animal> animais = this.retrieve("SELECT * FROM animal WHERE id = " + id);
         return (animais.isEmpty() ? null : animais.get(0));
     }
+    
+    public List<Animal> retrieveByOwnerId(int id){
+        List<Animal> animais = this.retrieve("SELECT * FROM animal where id_cliente = "+id);
+        
+        return (animais.isEmpty()? null : animais);
+    }
 
     public List retrieveBySimilarName(String name) {
         return this.retrieve("SELECT * FROM animal WHERE nome LIKE '%" + name + "%'");
