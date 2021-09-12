@@ -5,43 +5,51 @@ public class Veterinario {
     
     private int idVeterinario;
     private String nome;
-    private String enderecoVeterinario;
-    private String telVeterinario;
-    
-    public Veterinario(int idVeterinario, String nome, String enderecoVeterinario, String telVeterinario) {
+    private String email;
+    private String telefone;
+
+    public Veterinario(int idVeterinario, String nome, String email, String telVeterinario) {
         this.idVeterinario = idVeterinario;
         this.nome = nome;
-        this.enderecoVeterinario = enderecoVeterinario;
-        this.telVeterinario = telVeterinario;
+        this.email = email;
+        this.telefone = telVeterinario;
     }
 
     public int getIdVeterinario() {
         return idVeterinario;
     }
 
+    public void setIdVeterinario(int idVeterinario) {
+        this.idVeterinario = idVeterinario;
+    }
+    
+    
+
     public String getNome() {
         return nome;
-    }
-
-    public String getEnderecoVeterinario() {
-        return enderecoVeterinario;
-    }
-
-    public String getTelVeterinario() {
-        return telVeterinario;
     }
 
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public void setEnderecoVeterinario(String enderecoVeterinario) {
-        this.enderecoVeterinario = enderecoVeterinario;
+    public String getEmail() {
+        return email;
     }
 
-    public void setTelVeterinario(String telVeterinario) {
-        this.telVeterinario = telVeterinario;
+    public void setEmail(String email) {
+        this.email = email;
     }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+    
+  
     
     
     
