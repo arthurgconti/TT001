@@ -1,6 +1,6 @@
-package com.a165942.tt001;
+package model;
 
-import static com.a165942.tt001.DAO.getConnection;
+import static model.DAO.getConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class AnimalDAO extends DAO {
-        private static AnimalDAO instance;
+
+    private static AnimalDAO instance;
 
     private AnimalDAO() {
         getConnection();
@@ -46,8 +46,8 @@ public class AnimalDAO extends DAO {
     private Animal buildObject(ResultSet rs) {
         Animal animal = null;
         try {
-            animal = new Animal(rs.getInt("id"),rs.getString("nome"),
-                    rs.getString("anoNasc"), rs.getString("sexo"), 
+            animal = new Animal(rs.getInt("id"), rs.getString("nome"),
+                    rs.getString("anoNasc"), rs.getString("sexo"),
                     rs.getInt("id_especie"), rs.getInt("id_cliente"));
         } catch (SQLException e) {
             System.err.println("Exception: " + e.getMessage());
@@ -76,11 +76,11 @@ public class AnimalDAO extends DAO {
         List<Animal> animais = this.retrieve("SELECT * FROM animal WHERE id = " + id);
         return (animais.isEmpty() ? null : animais.get(0));
     }
-    
-    public List<Animal> retrieveByClientId(int id){
-        List<Animal> animais = this.retrieve("SELECT * FROM animal where id_cliente = "+id);
-        
-        return (animais.isEmpty()? null : animais);
+
+    public List<Animal> retrieveByClientId(int id) {
+        List<Animal> animais = this.retrieve("SELECT * FROM animal where id_cliente = " + id);
+
+        return (animais.isEmpty() ? null : animais);
     }
 
     public List retrieveBySimilarName(String name) {
@@ -93,7 +93,7 @@ public class AnimalDAO extends DAO {
             pstm = DAO.getConnection().prepareCall("UPDATE animal SET nome=?, anoNasc=? "
                     + "sexo=?, id_especie=?, id_cliente=? WHERE id=?");
             pstm.setString(1, animal.getNome());
-            pstm.setString(2, animal.getDataNasc());
+            pstm.setString(2, animal.getAnoNasc());
             pstm.setString(3, animal.getSexo());
             pstm.setInt(4, animal.getId_especie());
             pstm.setInt(5, animal.getId_especie());
@@ -116,5 +116,5 @@ public class AnimalDAO extends DAO {
             System.err.println("Exception: " + e.getMessage());
         }
     }
-    
+
 }

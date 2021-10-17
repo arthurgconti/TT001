@@ -1,8 +1,7 @@
-package com.a165942.tt001;
-
+package model;
 
 public class Veterinario {
-    
+
     private int idVeterinario;
     private String nome;
     private String email;
@@ -22,8 +21,6 @@ public class Veterinario {
     public void setIdVeterinario(int idVeterinario) {
         this.idVeterinario = idVeterinario;
     }
-    
-    
 
     public String getNome() {
         return nome;
@@ -49,8 +46,12 @@ public class Veterinario {
         this.telefone = telefone;
     }
     
-  
-    
-    
-    
+    @Override
+    public String toString(){
+        return "Veterinário{\nNome: "+nome+
+                "\nEmail: "+email+
+                "\nTelefone: "+telefone+
+                "\n}";
+    }
+
 }

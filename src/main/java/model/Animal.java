@@ -1,18 +1,18 @@
-package com.a165942.tt001;
+package model;
 
 public class Animal {
 
     private int id;
     private String nome;
-    private String dataNasc;
+    private String anoNasc;
     private String sexo;
     private int id_especie;
     private int id_cliente;
 
-    public Animal(int id, String nome, String dataNasc, String sexo, int id_especie, int id_cliente) {
+    public Animal(int id, String nome, String anoNasc, String sexo, int id_especie, int id_cliente) {
         this.id = id;
         this.nome = nome;
-        this.dataNasc = dataNasc;
+        this.anoNasc = anoNasc;
         this.sexo = sexo;
         this.id_especie = id_especie;
         this.id_cliente = id_cliente;
@@ -26,12 +26,20 @@ public class Animal {
         this.nome = nome;
     }
 
-    public void setIdade(String dataNasc) {
-        this.dataNasc = dataNasc;
+    public void setAnoNasc(String anoNasc) {
+        this.anoNasc = anoNasc;
     }
 
     public void setSexo(String sexo) {
         this.sexo = sexo;
+    }
+
+    public void setId_especie(int id_especie) {
+        this.id_especie = id_especie;
+    }
+
+    public void setId_cliente(int id_cliente) {
+        this.id_cliente = id_cliente;
     }
 
     public int getId() {
@@ -42,8 +50,8 @@ public class Animal {
         return nome;
     }
 
-    public String getDataNasc() {
-        return dataNasc;
+    public String getAnoNasc() {
+        return anoNasc;
     }
 
     public String getSexo() {
@@ -57,8 +65,6 @@ public class Animal {
     public int getId_cliente() {
         return id_cliente;
     }
-    
-    
 
     @Override
     public String toString() {

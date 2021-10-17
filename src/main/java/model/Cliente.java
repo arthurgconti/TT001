@@ -1,4 +1,4 @@
-package com.a165942.tt001;
+package model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +46,24 @@ public class Cliente {
     public String getEmail() {
         return email;
     }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+    
+    
 
     public void setEmail(String email) {
         if (!email.equals("")) {

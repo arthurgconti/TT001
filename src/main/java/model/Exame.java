@@ -1,4 +1,4 @@
-package com.a165942.tt001;
+package model;
 
 public class Exame {
     private int idExame;
@@ -36,6 +36,13 @@ public class Exame {
     public void setIdConsulta(int idConsulta) {
         this.idConsulta = idConsulta;
     }
-
+    
+    @Override
+    public String toString(){
+        return "Exame{\nCódigo: "+idExame+
+                "\nCódigo da Consulta: "+idConsulta+
+                "\nDescrição: "+desExame+
+                "\n}";
+    }
     
 }

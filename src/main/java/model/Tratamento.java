@@ -1,10 +1,11 @@
-package com.a165942.tt001;
+package model;
 
 import java.util.Date;
 
 public class Tratamento {
+
     private int idTratamento;
-        private int idAnimal;
+    private int idAnimal;
     private String nome;
     private Date dat_ini;
     private Date dat_fim;
@@ -67,18 +68,15 @@ public class Tratamento {
         this.terminou = terminou;
     }
 
-    
-    
     @Override
-    public String toString(){
-        return "Tratamento{\nCódigo Tratamento: "+idTratamento+
-                "\nid Animal: "+idAnimal+
-                "\nTratamento: "+nome+
-                "\nInício: "+dat_ini+
-                "\nTérmino: "+dat_fim+
-                "\nStatus: "+(terminou==true?"Finalizado":"Em andamento")+
-                "\n}";
+    public String toString() {
+        return "Tratamento{\nCódigo Tratamento: " + idTratamento
+                + "\nid Animal: " + idAnimal
+                + "\nTratamento: " + nome
+                + "\nInício: " + dat_ini
+                + "\nTérmino: " + dat_fim
+                + "\nStatus: " + (terminou == true ? "Finalizado" : "Em andamento")
+                + "\n}";
     }
 
- 
 }

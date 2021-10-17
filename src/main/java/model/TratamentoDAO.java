@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.a165942.tt001;
+package model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -62,8 +62,8 @@ public class TratamentoDAO extends DAO {
 
         try {
             boolean terminou = rs.getInt("terminado") == 1;
-            dataInicio = (Date) formatter.parse(rs.getString("dataIni"));
-            dataFim = (Date) formatter.parse(rs.getString("dataFim"));
+            dataInicio = formatter.parse(rs.getString("dataIni"));
+            dataFim = formatter.parse(rs.getString("dataFim"));
 
             tratamento = new Tratamento(rs.getInt("id"), rs.getInt("id_animal"),
                     rs.getString("nome"), dataInicio, dataFim, terminou);
@@ -99,10 +99,14 @@ public class TratamentoDAO extends DAO {
         return (tratamentos.isEmpty() ? null : tratamentos.get(0));
     }
 
-    public Tratamento retrieveByAnimalId(int id) {
+    public Tratamento retrieveFirstByAnimalId(int id) {
         List<Tratamento> tratamentos = this.retrieve("SELECT * FROM "
                 + "tratamento WHERE id_animal = " + id);
         return (tratamentos.isEmpty() ? null : tratamentos.get(0));
+    }
+
+    public List<Tratamento> retrieveAllByAnimalId(int id) {
+        return this.retrieve("SELECT * FROM tratamento where id_animal = " + id);
     }
 
     public List retrieveBySimilarName(String name) {

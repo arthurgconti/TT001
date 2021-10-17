@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.a165942.tt001;
+package model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.a165942.tt001;
+package model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,8 +40,8 @@ public class EspecieDAO extends DAO {
         } catch (SQLException e) {
             Logger.getLogger(EspecieDAO.class.getName()).log(Level.SEVERE, null, e);
         }
-        
-        return this.retrieveById(lastId("especie","id"));
+
+        return this.retrieveById(lastId("especie", "id"));
     }
 
     private Especie buildObject(ResultSet rs) {
@@ -76,36 +76,41 @@ public class EspecieDAO extends DAO {
         List<Especie> especies = this.retrieve("SELECT * FROM especie WHERE id = " + id);
         return (especies.isEmpty() ? null : especies.get(0));
     }
-    
-    public List retrieveBySimilarName(String name){
-        return this.retrieve("SELECT * FROM especie WHERE nome LIKE '%"+name+"%'");
+
+    public Especie retrieveByName(String name) {
+        List<Especie> especies = this.retrieve("SELECT * FROM especie WHERE nome = " + name);
+        return (especies.isEmpty() ? null : especies.get(0));
     }
-    
-    public List retrieveAll(){
+
+    public List retrieveBySimilarName(String name) {
+        return this.retrieve("SELECT * FROM especie WHERE nome LIKE '%" + name + "%'");
+    }
+
+    public List retrieveAll() {
         return this.retrieve("SELECT * FROM especie");
     }
-    
-    public void update(Especie especie){
+
+    public void update(Especie especie) {
         PreparedStatement pstm;
-        
+
         try {
             pstm = EspecieDAO.getConnection().prepareStatement("UPDETE especie SET nome=? WHERE id=?");
-            pstm.setString(1,especie.getNome());
-            pstm.setInt(2,especie.getIdEspecie());
+            pstm.setString(1, especie.getNome());
+            pstm.setInt(2, especie.getIdEspecie());
             executeUpdate(pstm);
-                    
-            
+
         } catch (SQLException e) {
             System.err.println("Exception: " + e.getMessage());
         }
     }
-    public void delete(Especie especie){
+
+    public void delete(Especie especie) {
         PreparedStatement pstm;
-         try {
-             pstm = EspecieDAO.getConnection().prepareStatement("DELETE FROM especie WHERE id = ?");
-             pstm.setInt(1,especie.getIdEspecie());
-             executeUpdate(pstm);
-             
+        try {
+            pstm = EspecieDAO.getConnection().prepareStatement("DELETE FROM especie WHERE id = ?");
+            pstm.setInt(1, especie.getIdEspecie());
+            executeUpdate(pstm);
+
         } catch (SQLException e) {
             System.err.println("Exception: " + e.getMessage());
         }

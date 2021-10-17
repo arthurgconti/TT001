@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.a165942.tt001;
+package model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -118,6 +118,10 @@ public class VeterinarioDAO extends DAO {
         } catch (SQLException e) {
             System.err.println("Exception: " + e.getMessage());
         }
+    }
+
+    void create(String jorge) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
