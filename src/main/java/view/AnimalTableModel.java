@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package view;
 
 import java.util.List;
@@ -50,12 +46,15 @@ public class AnimalTableModel extends GenericTableModel {
             case 1:
                 return animal.getAnoNasc();
             case 2:
-                if (animal.getSexo().equals("m")) {
+                if (animal.getSexo().equals("m")) 
                     return "Macho";
-                }
-
-                return "Fêmea";
+                else if(animal.getSexo().equals("f"))
+                    return "Fêmea";
+                
+                return "";
             case 3:
+                if(animal.getId_especie()==0)
+                    return "";
                 Especie species = EspecieDAO.getInstance().retrieveById(animal.getId_especie());
                 if (species != null) {
                     return species.getNome();
@@ -86,6 +85,7 @@ public class AnimalTableModel extends GenericTableModel {
                 Especie species = EspecieDAO.getInstance().retrieveByName((String) aValue);
                 if (species == null) {
                     species = EspecieDAO.getInstance().create((String) aValue);
+                    animal.setId_especie(species.getIdEspecie());
                     
                 } else {
                     animal.setId_especie(species.getIdEspecie());

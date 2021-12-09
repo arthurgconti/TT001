@@ -23,17 +23,16 @@ public class AnimalDAO extends DAO {
         return (instance == null ? (instance = new AnimalDAO()) : instance);
     }
 
-    public Animal create(String nome, String anoNasc, String sexo, int id_especie, int id_cliente) {
+    public Animal create(String nome, String anoNasc, String sexo, int id_cliente) {
         try {
             PreparedStatement pstm;
             pstm = DAO.getConnection().prepareStatement("INSERT INTO animal"
-                    + " (nome,anoNasc,sexo,id_especie,id_cliente)"
-                    + "VALUES (?,?,?,?,?)");
+                    + " (nome,anoNasc,sexo,id_cliente)"
+                    + "VALUES (?,?,?,?)");
             pstm.setString(1, nome);
             pstm.setString(2, anoNasc);
             pstm.setString(3, sexo);
-            pstm.setInt(4, id_especie);
-            pstm.setInt(5, id_cliente);
+            pstm.setInt(4, id_cliente);
             executeUpdate(pstm);
 
         } catch (SQLException e) {
@@ -90,13 +89,13 @@ public class AnimalDAO extends DAO {
     public void update(Animal animal) {
         PreparedStatement pstm;
         try {
-            pstm = DAO.getConnection().prepareCall("UPDATE animal SET nome=?, anoNasc=? "
+            pstm = DAO.getConnection().prepareStatement("UPDATE animal SET nome=?, anoNasc=?, "
                     + "sexo=?, id_especie=?, id_cliente=? WHERE id=?");
             pstm.setString(1, animal.getNome());
             pstm.setString(2, animal.getAnoNasc());
             pstm.setString(3, animal.getSexo());
             pstm.setInt(4, animal.getId_especie());
-            pstm.setInt(5, animal.getId_especie());
+            pstm.setInt(5, animal.getId_cliente());
             pstm.setInt(6, animal.getId());
             executeUpdate(pstm);
 
@@ -109,7 +108,7 @@ public class AnimalDAO extends DAO {
         PreparedStatement pstm;
 
         try {
-            pstm = DAO.getConnection().prepareCall("DELETE FROM animal WHERE id = ?");
+            pstm = DAO.getConnection().prepareStatement("DELETE FROM animal WHERE id = ?");
             pstm.setInt(1, animal.getId());
             executeUpdate(pstm);
         } catch (SQLException e) {

@@ -13,7 +13,7 @@ public class Cliente {
     private String email;
     private List animais;
 
-    public Cliente(int id, String nome, String endereco, String telefone, String cep, String email) {
+    public Cliente(int id, String nome, String endereco, String cep, String email,String telefone) {
         this.id = id;
         this.nome = nome;
         this.endereco = endereco;

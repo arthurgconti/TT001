@@ -78,7 +78,7 @@ public class EspecieDAO extends DAO {
     }
 
     public Especie retrieveByName(String name) {
-        List<Especie> especies = this.retrieve("SELECT * FROM especie WHERE nome = " + name);
+        List<Especie> especies = this.retrieve("SELECT * FROM especie WHERE nome LIKE '" + name+"%'");
         return (especies.isEmpty() ? null : especies.get(0));
     }
 

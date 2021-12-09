@@ -1,9 +1,12 @@
 package controller;
 
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import model.Animal;
+import model.AnimalDAO;
 import model.Cliente;
+import model.ClienteDAO;
 import model.Consulta;
 import model.EspecieDAO;
 import model.Exame;
@@ -25,6 +28,8 @@ public class Controller {
     public final static int TRATAMENTO = 0;
     public final static int CONSULTA = 1;
     public final static int VETERINARIO = 2;
+    public final static int ANIMAL = 3;
+    public final static int CLIENTE = 4;
 
     private static Cliente selectedClient = null;
     private static Animal selectedAnimal = null;
@@ -71,6 +76,32 @@ public class Controller {
     public static void setTableModel(JTable table, GenericTableModel tableModel) {
         table.setModel(tableModel);
     }
+    
+    public static void atualizarClientesNomesParecidos(JTable table, String nome){
+        if(!nome.equals(""))
+            ((GenericTableModel)table.getModel()).addListOfItems(ClienteDAO.getInstance().retrieveBySimilarName(nome));
+        else
+            ((GenericTableModel)table.getModel()).addListOfItems(ClienteDAO.getInstance().retrieveAll());
+    }
+    
+    public static Cliente criarCliente(String nome,String endereco,String cep,String email,String telefone){
+        return ClienteDAO.getInstance().create(nome,endereco , cep,email , telefone);
+    }
+    
+    public static void deletarCliente(JTable table){
+        ClienteDAO.getInstance().delete(selectedClient);
+        ((GenericTableModel) table.getModel()).removeItem(table.getSelectedRow());
+        
+    }
+    
+    public static Animal criarAnimal(String nome,String anoNasc,String sexo){
+        return AnimalDAO.getInstance().create(nome, anoNasc,sexo, selectedClient.getId());
+    }
+    
+    public static void deletarAnimal(JTable table){
+        AnimalDAO.getInstance().delete(selectedAnimal);
+        ((GenericTableModel) table.getModel()).removeItem(table.getSelectedRow());
+    }
 
     public static void setSelected(Object selected) {
         if (selected instanceof Cliente) {
@@ -80,7 +111,13 @@ public class Controller {
             selectedSpecieLabel.setText("");
         } else if (selected instanceof Animal) {
             selectedAnimal = (Animal) selected;
+            System.out.println(selectedAnimal);
+            
+            if(selectedAnimal.getId_especie()!=0){
             selectedAnimalSpecie = EspecieDAO.getInstance().retrieveById(selectedAnimal.getId_especie()).getNome();
+            }
+            else
+                selectedAnimalSpecie="";
             selectedAnimalLabel.setText(selectedAnimal.getNome());
             selectedSpecieLabel.setText(selectedAnimalSpecie);
         } else if (selected instanceof Tratamento) {
@@ -99,11 +136,19 @@ public class Controller {
             case CONSULTA:
                 selectedAppointment = null;
                 break;
+            case ANIMAL:
+                selectedAnimal = null;
+                selectedSpecieLabel.setText("");
+                selectedAnimalLabel.setText("");
+                break;
+            case CLIENTE:
+                selectedClient=null;
+                selectedClientLabel.setText("");
+                break;
             default:
                 break;
         }
     }
-
     public static void setLabelValues() {
         selectedClientLabel.setText(selectedClient.getNome());
         selectedAnimalLabel.setText(selectedAnimal.getNome());

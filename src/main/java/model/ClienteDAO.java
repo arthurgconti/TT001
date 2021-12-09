@@ -83,7 +83,7 @@ public class ClienteDAO extends DAO {
     public void update(Cliente cliente) {
         PreparedStatement pstm;
         try {
-            pstm = DAO.getConnection().prepareCall("UPDATE cliente SET nome=?, endereco=? "
+            pstm = DAO.getConnection().prepareStatement("UPDATE cliente SET nome=?, endereco=?, "
                     + "cep=?, email=?, telefone=? WHERE id=?");
             pstm.setString(1, cliente.getNome());
             pstm.setString(2, cliente.getEndereco());
@@ -102,7 +102,7 @@ public class ClienteDAO extends DAO {
         PreparedStatement pstm;
 
         try {
-            pstm = DAO.getConnection().prepareCall("DELETE FROM cliente WHERE id = ?");
+            pstm = DAO.getConnection().prepareStatement("DELETE FROM cliente WHERE id = ?");
             pstm.setInt(1, cliente.getId());
             executeUpdate(pstm);
         } catch (SQLException e) {
