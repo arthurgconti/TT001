@@ -56,23 +56,23 @@ public class TratamentoDAO extends DAO {
 
     private Tratamento buildObject(ResultSet rs) {
         Tratamento tratamento = null;
-        DateFormat formatter;
-        formatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date dataInicio, dataFim;
+//        DateFormat formatter;
+//        formatter = new SimpleDateFormat("dd/MM/yyyy");
 
         try {
             boolean terminou = rs.getInt("terminado") == 1;
-            dataInicio = formatter.parse(rs.getString("dataIni"));
-            dataFim = formatter.parse(rs.getString("dataFim"));
+//            dataInicio = formatter.parse(rs.getString("dataIni"));
+//            dataFim = formatter.parse(rs.getString("dataFim"));
 
             tratamento = new Tratamento(rs.getInt("id"), rs.getInt("id_animal"),
-                    rs.getString("nome"), dataInicio, dataFim, terminou);
+                    rs.getString("nome"), rs.getString("dataIni"), rs.getString("dataFim"), terminou);
 
         } catch (SQLException e) {
             System.err.println("Exception: " + e.getMessage());
-        } catch (ParseException ex) {
-            Logger.getLogger(TratamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+//        } catch (ParseException ex) {
+//            Logger.getLogger(TratamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
         return tratamento;
     }

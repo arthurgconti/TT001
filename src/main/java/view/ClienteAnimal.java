@@ -7,6 +7,8 @@ package view;
 
 import controller.Controller;
 import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import model.AnimalDAO;
 import model.ClienteDAO;
@@ -357,8 +359,14 @@ public class ClienteAnimal extends javax.swing.JFrame {
         ));
     }//GEN-LAST:event_jTable1MousePressed
 
+   
     private void jTable2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MousePressed
         Controller.setSelected(((GenericTableModel) jTable2.getModel()).getItem(jTable2.getSelectedRow()));
+        List consultasController = Controller.getAppointmentsAnimal();
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        listModel.addAll(consultasController);
+        jList1.setModel(listModel);
+        
     }//GEN-LAST:event_jTable2MousePressed
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus

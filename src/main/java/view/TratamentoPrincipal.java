@@ -6,6 +6,8 @@
 package view;
 
 import controller.Controller;
+import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import model.TratamentoDAO;
 
@@ -19,6 +21,10 @@ public class TratamentoPrincipal extends javax.swing.JFrame {
         Controller.setLabel(jLabel4, jLabel5, jLabel6);
         Controller.setLabelValues();
         Controller.setTableModel(jTable1, new TratamentoTableModel(TratamentoDAO.getInstance().retrieveAllByAnimalId(Controller.getSelectedAnimal().getId())));
+        List consultasController = Controller.getAppointmentsAnimal();
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        listModel.addAll(consultasController);
+        jList1.setModel(listModel);
 
     }
 
@@ -61,6 +67,13 @@ public class TratamentoPrincipal extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -213,7 +226,7 @@ public class TratamentoPrincipal extends javax.swing.JFrame {
                         .addComponent(jLabel6)))
                 .addGap(51, 51, 51)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(125, Short.MAX_VALUE))
+                .addContainerGap(242, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -262,7 +275,7 @@ public class TratamentoPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-//        Controller.clearSelection(Controller.TRATAMENTO);
+        Controller.clearSelection(Controller.TRATAMENTO);
         dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -273,6 +286,15 @@ public class TratamentoPrincipal extends javax.swing.JFrame {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         Controller.clearSelection(Controller.TRATAMENTO);
     }//GEN-LAST:event_formWindowClosed
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        Controller.setTableModel(jTable1, new TratamentoTableModel(TratamentoDAO.getInstance().retrieveAllByAnimalId(Controller.getSelectedAnimal().getId())));
+        List consultasController = Controller.getAppointmentsAnimal();
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        listModel.addAll(consultasController);
+        jList1.setModel(listModel);
+        
+    }//GEN-LAST:event_formWindowGainedFocus
 
     /**
      * @param args the command line arguments

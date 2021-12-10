@@ -6,6 +6,8 @@
 package view;
 
 import controller.Controller;
+import java.util.List;
+import javax.swing.DefaultListModel;
 import model.ConsultaDAO;
 import model.VeterinarioDAO;
 
@@ -28,7 +30,10 @@ public class AgendarConsulta extends javax.swing.JFrame {
         Controller.setLabel(jLabel4, jLabel5, jLabel6);
         Controller.setLabelValues();
         Controller.setTableModel(jTable1, new VeterinarioTableModel(VeterinarioDAO.getInstance().retrieveAll()));
-
+        List consultasController = Controller.getAppointmentsAnimal();
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        listModel.addAll(consultasController);
+        jList1.setModel(listModel);
     }
 
     /**

@@ -115,5 +115,13 @@ public class AnimalDAO extends DAO {
             System.err.println("Exception: " + e.getMessage());
         }
     }
+    
+    public List<Consulta> getLastAppointments(int id){
+            return ConsultaDAO.getInstance().retrieve("SELECT * "
+                    + "FROM consulta "
+                    + "WHERE id_animal = "+id
+                    + " LIMIT 5");
+            
+    }
 
 }

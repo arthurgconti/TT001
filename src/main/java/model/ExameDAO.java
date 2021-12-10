@@ -87,8 +87,8 @@ public class ExameDAO extends DAO {
         return this.retrieve("SELECT * FROM exame");
     }
     
-    public List retrieveByAppointmentId(Exame exame){
-        return this.retrieve("SELECT * FROM exame where id_consulta="+exame.getIdConsulta());
+    public List retrieveByAppointmentId(int id){
+        return this.retrieve("SELECT * FROM exame where id_consulta="+id);
         
     }
     

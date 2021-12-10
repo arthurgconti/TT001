@@ -5,6 +5,9 @@
  */
 package view;
 
+import controller.Controller;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Arthur Conti
@@ -17,6 +20,7 @@ public class PopupNovoTratamento extends javax.swing.JFrame {
     public PopupNovoTratamento() {
         initComponents();
         setLocationRelativeTo(null);
+        jTextField1.setText("");
     }
 
     /**
@@ -36,6 +40,11 @@ public class PopupNovoTratamento extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jButton1.setText("Confirmar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTextField1.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jTextField1.setText("jTextField1");
@@ -72,6 +81,15 @@ public class PopupNovoTratamento extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+     if(!jTextField1.getText().isBlank()){
+        Controller.criarTratamento(jTextField1.getText());
+        this.dispose();
+     }
+     else
+         JOptionPane.showMessageDialog(null,"preencha o nome do tratamento!");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

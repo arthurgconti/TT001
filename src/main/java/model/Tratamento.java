@@ -1,17 +1,16 @@
 package model;
 
-import java.util.Date;
 
 public class Tratamento {
 
     private int idTratamento;
     private int idAnimal;
     private String nome;
-    private Date dat_ini;
-    private Date dat_fim;
+    private String dat_ini;
+    private String dat_fim;
     private boolean terminou;
 
-    public Tratamento(int idTratamento, int idAnimal, String nome, Date dat_ini, Date dat_fim, boolean terminou) {
+    public Tratamento(int idTratamento, int idAnimal, String nome, String dat_ini, String dat_fim, boolean terminou) {
         this.idTratamento = idTratamento;
         this.idAnimal = idAnimal;
         this.nome = nome;
@@ -36,19 +35,19 @@ public class Tratamento {
         this.nome = nome;
     }
 
-    public Date getDat_ini() {
+    public String getDat_ini() {
         return dat_ini;
     }
 
-    public void setDat_ini(Date dat_ini) {
+    public void setDat_ini(String dat_ini) {
         this.dat_ini = dat_ini;
     }
 
-    public Date getDat_fim() {
+    public String getDat_fim() {
         return dat_fim;
     }
 
-    public void setDat_fim(Date dat_fim) {
+    public void setDat_fim(String dat_fim) {
         this.dat_fim = dat_fim;
     }
 
