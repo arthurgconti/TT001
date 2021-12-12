@@ -108,6 +108,11 @@ public class AgendarConsulta extends javax.swing.JFrame {
                 "title 1", "title 2", "title 3", "title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jTable1MousePressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel7.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
@@ -405,6 +410,10 @@ public class AgendarConsulta extends javax.swing.JFrame {
             Controller.clearSelection(Controller.VETERINARIO);
         }
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jTable1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MousePressed
+        Controller.setSelected(((GenericTableModel) jTable1.getModel()).getItem(jTable1.getSelectedRow()));
+    }//GEN-LAST:event_jTable1MousePressed
 
     /**
      * @param args the command line arguments
