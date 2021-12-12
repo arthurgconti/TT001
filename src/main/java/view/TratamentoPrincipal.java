@@ -267,11 +267,13 @@ public class TratamentoPrincipal extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         if (Controller.getSelectedTreatment() != null) {
+//            Controller.setSelectedAppointment();
         ConsultasExames consultaExames = new ConsultasExames();
         consultaExames.setVisible(true);
         }
         else{
-            JOptionPane.showMessageDialog(this, "Selecione um tratamento para poder acessar");        }
+            JOptionPane.showMessageDialog(this, "Selecione um tratamento para poder acessar");        
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

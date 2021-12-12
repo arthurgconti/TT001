@@ -2,7 +2,6 @@ package controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JLabel;
@@ -14,9 +13,11 @@ import model.ClienteDAO;
 import model.Consulta;
 import model.EspecieDAO;
 import model.Exame;
+import model.ExameDAO;
 import model.Tratamento;
 import model.TratamentoDAO;
 import model.Veterinario;
+import model.VeterinarioDAO;
 import view.GenericTableModel;
 
 /**
@@ -34,6 +35,7 @@ public class Controller {
     public final static int VETERINARIO = 2;
     public final static int ANIMAL = 3;
     public final static int CLIENTE = 4;
+    public final static int EXAME = 5;
 
     private static Cliente selectedClient = null;
     private static Animal selectedAnimal = null;
@@ -112,6 +114,24 @@ public class Controller {
         TratamentoDAO.getInstance().create(selectedAnimal.getId()
                 , tratamento, new SimpleDateFormat("dd/MM/yyyy").format(new Date()), "", 0);
     }
+    
+    public static Veterinario criarVeterinario(String nome, String email, String telefone) {
+        return VeterinarioDAO.getInstance().create(nome, email, telefone);
+    }
+      public static void deletarVeterinario(JTable table) {
+        VeterinarioDAO.getInstance().delete(selectedVet);
+        ((GenericTableModel) table.getModel()).removeItem(table.getSelectedRow());
+    }
+      
+      public static Exame criarExame(String nome) {
+        return ExameDAO.getInstance().create(nome, selectedAppointment.getIdConsulta());
+    }
+      
+    public static void deletarExame(JTable table) {
+        ExameDAO.getInstance().delete(selectedExam);
+        ((GenericTableModel) table.getModel()).removeItem(table.getSelectedRow());
+    }
+    
 
     public static void setSelected(Object selected) {
         if (selected instanceof Cliente) {
@@ -131,6 +151,15 @@ public class Controller {
             selectedSpecieLabel.setText(selectedAnimalSpecie);
         } else if (selected instanceof Tratamento) {
             selectedTreatment = (Tratamento) selected;
+        }
+         else if (selected instanceof Consulta) {
+            selectedAppointment = (Consulta) selected;
+        }
+         else if (selected instanceof Exame) {
+            selectedExam =  (Exame) selected;
+        }
+         else if (selected instanceof Veterinario) {
+            selectedVet =  (Veterinario) selected;
         }
     }
 
@@ -153,6 +182,9 @@ public class Controller {
             case CLIENTE:
                 selectedClient = null;
                 selectedClientLabel.setText("");
+                break;
+            case EXAME:
+                selectedExam = null;
                 break;
             default:
                 break;

@@ -8,7 +8,7 @@ package view;
 import controller.Controller;
 import java.util.List;
 import javax.swing.DefaultListModel;
-import model.ConsultaDAO;
+import javax.swing.JOptionPane;
 import model.VeterinarioDAO;
 
 /**
@@ -120,9 +120,19 @@ public class AgendarConsulta extends javax.swing.JFrame {
 
         jButton6.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jButton6.setText("Apagar Veterinário");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jButton7.setText("Novo Veterinário");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel10.setText("Agendar Nova Consulta");
@@ -382,6 +392,19 @@ public class AgendarConsulta extends javax.swing.JFrame {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         Controller.clearSelection(Controller.VETERINARIO);
     }//GEN-LAST:event_formWindowClosed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        ((GenericTableModel) jTable1.getModel()).addItem(Controller.criarVeterinario("", "", ""));
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+            if (JOptionPane.showConfirmDialog(null, "Você ira excluir um veterinario, tem certeza?",
+                "Deleção, vamos com calma!", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION) {
+            Controller.deletarVeterinario(jTable1);
+            Controller.clearSelection(Controller.VETERINARIO);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments

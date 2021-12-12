@@ -96,7 +96,7 @@ public class ExameDAO extends DAO {
         PreparedStatement pstm;
         
         try {
-            pstm = ExameDAO.getConnection().prepareStatement("UPDETE exame SET nome=?, id_consulta = ? WHERE id=?");
+            pstm = ExameDAO.getConnection().prepareStatement("UPDATE exame SET nome=?, id_consulta = ? WHERE id=?");
             pstm.setString(1,exame.getDesExame());
             pstm.setInt(2,exame.getIdConsulta());
             pstm.setInt(3,exame.getIdExame());

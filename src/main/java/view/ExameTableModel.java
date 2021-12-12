@@ -16,7 +16,6 @@ public class ExameTableModel extends GenericTableModel {
 
     public ExameTableModel(List vDados) {
         super(vDados, new String[]{"Nome"});
-
     }
 
     @Override

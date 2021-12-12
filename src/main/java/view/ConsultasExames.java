@@ -6,8 +6,10 @@
 package view;
 
 import controller.Controller;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import model.ConsultaDAO;
 import model.ExameDAO;
 import model.TratamentoDAO;
@@ -24,7 +26,7 @@ public class ConsultasExames extends javax.swing.JFrame {
         Controller.setLabel(jLabel4, jLabel5, jLabel6);
         Controller.setLabelValues();
         Controller.setTableModel(jTable1, new ConsultaTableModel(ConsultaDAO.getInstance().retrieveAllByTreatmentId(Controller.getSelectedTreatment().getIdTratamento())));
-        Controller.setTableModel(jTable2, new ExameTableModel(ExameDAO.getInstance().retrieveByAppointmentId(Controller.getSelectedAppointment().getIdConsulta())));
+        Controller.setTableModel(jTable2, new ExameTableModel(new ArrayList()));
         List consultasController = Controller.getAppointmentsAnimal();
         DefaultListModel<String> listModel = new DefaultListModel<>();
         listModel.addAll(consultasController);
@@ -95,6 +97,11 @@ public class ConsultasExames extends javax.swing.JFrame {
                 "title 1", "title 2", "title 3", "title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jTable1MousePressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel7.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
@@ -102,6 +109,11 @@ public class ConsultasExames extends javax.swing.JFrame {
 
         jButton6.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jButton6.setText("Apagar Exame");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jButton7.setText("Novo Exame");
@@ -151,6 +163,11 @@ public class ConsultasExames extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jTable2MousePressed(evt);
+            }
+        });
         jScrollPane5.setViewportView(jTable2);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -331,11 +348,26 @@ public class ConsultasExames extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        DefaultListModel<String> listModel = new DefaultListModel<>();
-//        listModel.addAll();
-//        jList2.
+        ((GenericTableModel) jTable2.getModel()).addItem(Controller.criarExame(""));
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "Você ira excluir um exame, tem certeza?",
+                "Deleção, vamos com calma!", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION) {
+            Controller.deletarExame(jTable2);
+            Controller.clearSelection(Controller.EXAME);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jTable1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MousePressed
+        Controller.setSelected(((GenericTableModel) jTable1.getModel()).getItem(jTable1.getSelectedRow()));
+        Controller.setTableModel(jTable2, new ExameTableModel(ExameDAO.getInstance().retrieveByAppointmentId(Controller.getSelectedAppointment().getIdConsulta())));
+    }//GEN-LAST:event_jTable1MousePressed
+
+    private void jTable2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MousePressed
+        Controller.setSelected(((GenericTableModel) jTable2.getModel()).getItem(jTable2.getSelectedRow()));
+    }//GEN-LAST:event_jTable2MousePressed
+    
     /**
      * @param args the command line arguments
      */

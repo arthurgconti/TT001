@@ -94,7 +94,7 @@ public class VeterinarioDAO extends DAO {
         PreparedStatement pstm;
 
         try {
-            pstm = VeterinarioDAO.getConnection().prepareStatement("UPDETE vet "
+            pstm = VeterinarioDAO.getConnection().prepareStatement("UPDATE vet "
                     + "SET nome=?, email = ?, telefone = ? WHERE id=?");
             pstm.setString(1, veterinario.getNome());
             pstm.setString(2, veterinario.getEmail());
