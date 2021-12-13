@@ -8,11 +8,9 @@ package model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
+import java.sql.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +32,7 @@ public class ConsultaDAO extends DAO {
         return (instance == null ? (instance = new ConsultaDAO()) : instance);
     }
 
-    public Consulta create(String data, String horario, String comentario,
+    public Consulta create(Calendar data, String horario, String comentario,
             int idAnimal, int idVet, int idTratamento, int terminado) {
         try {
             PreparedStatement pstm;
@@ -42,7 +40,7 @@ public class ConsultaDAO extends DAO {
                     + " (data,horario,comentario,id_animal,id_vet,id_tratamento,"
                     + "terminado) "
                     + "VALUES (?,?,?,?,?,?,?)");
-            pstm.setString(1, data);
+            pstm.setDate(1, new Date(data.getTimeInMillis()));
             pstm.setString(2, horario);
             pstm.setString(3, comentario);
             pstm.setInt(4, idAnimal);
@@ -60,22 +58,19 @@ public class ConsultaDAO extends DAO {
 
     private Consulta buildObject(ResultSet rs) {
         Consulta consulta = null;
-        DateFormat formatter;
-        formatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date data;
 
         try {
+            Calendar dt = Calendar.getInstance();
             boolean terminou = rs.getInt("terminado") == 1;
-            data = (Date) formatter.parse(rs.getString("data"));
+
+            dt.setTime(rs.getDate("data"));
 
             consulta = new Consulta(rs.getInt("id"), rs.getInt("id_tratamento"),
                     rs.getInt("id_vet"), rs.getInt("id_animal"),
-                    data, rs.getString("horario"), rs.getString("comentario"), terminou);
+                    dt, rs.getString("horario"), rs.getString("comentario"), terminou);
 
         } catch (SQLException e) {
             System.err.println("Exception: " + e.getMessage());
-        } catch (ParseException ex) {
-            Logger.getLogger(ConsultaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return consulta;
@@ -147,7 +142,7 @@ public class ConsultaDAO extends DAO {
         PreparedStatement pstm;
 
         try {
-            pstm = ConsultaDAO.getConnection().prepareStatement("UPDETE consulta "
+            pstm = ConsultaDAO.getConnection().prepareStatement("UPDATE consulta "
                     + "SET data=?, horario = ?, comentario = ?, "
                     + "id_animal = ?, id_vet = ?,"
                     + "id_tratamento, terminado = ? WHERE id = ?");
@@ -156,7 +151,7 @@ public class ConsultaDAO extends DAO {
             pstm.setString(3, consulta.getComentario());
             pstm.setInt(4, consulta.getIdAnimal());
             pstm.setInt(5, consulta.getIdVeterinario());
-            pstm.setInt(6,consulta.getIdTratamento());
+            pstm.setInt(6, consulta.getIdTratamento());
             pstm.setInt(7, (consulta.isTerminou() ? 1 : 0));
             pstm.setInt(8, consulta.getIdConsulta());
 
@@ -174,6 +169,20 @@ public class ConsultaDAO extends DAO {
             pstm.setInt(1, consulta.getIdConsulta());
             executeUpdate(pstm);
 
+        } catch (SQLException e) {
+            System.err.println("Exception: " + e.getMessage());
+        }
+    }
+
+    public void endAppointment(Consulta consulta) {
+        PreparedStatement pstm;
+        try {
+            pstm = ConsultaDAO.getConnection().prepareStatement("UPDATE consulta "
+                    + "SET terminado = ? WHERE id = ?");
+            pstm.setInt(1, 1);
+            pstm.setInt(2, consulta.getIdConsulta());
+
+            executeUpdate(pstm);
         } catch (SQLException e) {
             System.err.println("Exception: " + e.getMessage());
         }

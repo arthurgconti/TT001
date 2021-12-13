@@ -2,15 +2,19 @@ package controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import model.Animal;
 import model.AnimalDAO;
 import model.Cliente;
 import model.ClienteDAO;
 import model.Consulta;
+import model.ConsultaDAO;
 import model.EspecieDAO;
 import model.Exame;
 import model.ExameDAO;
@@ -91,6 +95,14 @@ public class Controller {
         }
     }
 
+    public static void atualizarVeterinariosNomesParecidos(JTable table, String nome) {
+        if (!nome.equals("")) {
+            ((GenericTableModel) table.getModel()).addListOfItems(VeterinarioDAO.getInstance().retrieveBySimilarName(nome));
+        } else {
+            ((GenericTableModel) table.getModel()).addListOfItems(VeterinarioDAO.getInstance().retrieveAll());
+        }
+    }
+
     public static Cliente criarCliente(String nome, String endereco, String cep, String email, String telefone) {
         return ClienteDAO.getInstance().create(nome, endereco, cep, email, telefone);
     }
@@ -109,29 +121,41 @@ public class Controller {
         AnimalDAO.getInstance().delete(selectedAnimal);
         ((GenericTableModel) table.getModel()).removeItem(table.getSelectedRow());
     }
-    
-    public static void criarTratamento(String tratamento){
-        TratamentoDAO.getInstance().create(selectedAnimal.getId()
-                , tratamento, new SimpleDateFormat("dd/MM/yyyy").format(new Date()), "", 0);
+
+    public static void criarTratamento(String tratamento) {
+        TratamentoDAO.getInstance().create(selectedAnimal.getId(),
+                tratamento, new SimpleDateFormat("dd/MM/yyyy").format(new Date()), "", 0);
     }
-    
+
     public static Veterinario criarVeterinario(String nome, String email, String telefone) {
         return VeterinarioDAO.getInstance().create(nome, email, telefone);
     }
-      public static void deletarVeterinario(JTable table) {
+
+    public static void deletarVeterinario(JTable table) {
         VeterinarioDAO.getInstance().delete(selectedVet);
         ((GenericTableModel) table.getModel()).removeItem(table.getSelectedRow());
     }
-      
-      public static Exame criarExame(String nome) {
+
+    public static Exame criarExame(String nome) {
         return ExameDAO.getInstance().create(nome, selectedAppointment.getIdConsulta());
     }
-      
+
     public static void deletarExame(JTable table) {
         ExameDAO.getInstance().delete(selectedExam);
         ((GenericTableModel) table.getModel()).removeItem(table.getSelectedRow());
     }
-    
+
+    public static void criarConsulta(Calendar data, String horario, String comentario) {
+        ConsultaDAO.getInstance().create(data, horario, comentario, selectedAnimal.getId(),
+                 selectedVet.getIdVeterinario(), selectedTreatment.getIdTratamento(),
+                0);
+
+    }
+
+    public static void deletarAppointment(JTable table) {
+        ConsultaDAO.getInstance().delete(selectedAppointment);
+        ((GenericTableModel) table.getModel()).removeItem(table.getSelectedRow());
+    }
 
     public static void setSelected(Object selected) {
         if (selected instanceof Cliente) {
@@ -151,15 +175,12 @@ public class Controller {
             selectedSpecieLabel.setText(selectedAnimalSpecie);
         } else if (selected instanceof Tratamento) {
             selectedTreatment = (Tratamento) selected;
-        }
-         else if (selected instanceof Consulta) {
+        } else if (selected instanceof Consulta) {
             selectedAppointment = (Consulta) selected;
-        }
-         else if (selected instanceof Exame) {
-            selectedExam =  (Exame) selected;
-        }
-         else if (selected instanceof Veterinario) {
-            selectedVet =  (Veterinario) selected;
+        } else if (selected instanceof Exame) {
+            selectedExam = (Exame) selected;
+        } else if (selected instanceof Veterinario) {
+            selectedVet = (Veterinario) selected;
         }
     }
 
@@ -198,12 +219,47 @@ public class Controller {
     }
 
     public static List getAppointmentsAnimal() {
+        SimpleDateFormat dataFormat = new SimpleDateFormat("dd/MM/yy");
         List lista = AnimalDAO.getInstance().getLastAppointments(selectedAnimal.getId());
         List listaString = new ArrayList();
 
         for (Object obj : lista) {
-            listaString.add("Data: " + ((Consulta) obj).getDataConsulta() + " | Horário:" + ((Consulta) obj).getHora());
+            listaString.add("Data: " + dataFormat.format(((Consulta) obj).getDataConsulta().getTime())
+                    + " | Horário:" + ((Consulta) obj).getHora()
+                    + " | Vet: " + (VeterinarioDAO.getInstance().retrieveById(((Consulta) obj).getIdVeterinario()).getNome())
+            );
         }
         return listaString;
     }
+
+    public static void endTreatment() {
+        if (!selectedTreatment.isTerminou()) {
+            TratamentoDAO.getInstance().endTreatment(selectedTreatment);
+        } else {
+            JOptionPane.showMessageDialog(null, "Tratamento já finalizado");
+        }
+    }
+
+    public static void endAppointment() {
+        if (!selectedAppointment.isTerminou()) {
+            ConsultaDAO.getInstance().endAppointment(selectedAppointment);
+        } else {
+            JOptionPane.showMessageDialog(null, "Consulta já realizada");
+        }
+    }
+
+    public static List getAppointmentsHours() {
+        return new ArrayList<>(Arrays.asList(
+                "08:00",
+                "09:00",
+                "10:00",
+                "11:00",
+                "15:00",
+                "14:00",
+                "15:00",
+                "16:00",
+                "17:00",
+                "18:00"));
+    }
+
 }

@@ -103,6 +103,11 @@ public class TratamentoPrincipal extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jButton1.setText("Encerrar Tratamento");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jButton2.setText("Novo Tratamento");
@@ -297,6 +302,11 @@ public class TratamentoPrincipal extends javax.swing.JFrame {
         jList1.setModel(listModel);
         
     }//GEN-LAST:event_formWindowGainedFocus
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Controller.endTreatment();
+        Controller.setTableModel(jTable1, new TratamentoTableModel(TratamentoDAO.getInstance().retrieveAllByAnimalId(Controller.getSelectedAnimal().getId())));
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -94,7 +94,7 @@ public class EspecieDAO extends DAO {
         PreparedStatement pstm;
 
         try {
-            pstm = EspecieDAO.getConnection().prepareStatement("UPDETE especie SET nome=? WHERE id=?");
+            pstm = EspecieDAO.getConnection().prepareStatement("UPDATE especie SET nome=? WHERE id=?");
             pstm.setString(1, especie.getNome());
             pstm.setInt(2, especie.getIdEspecie());
             executeUpdate(pstm);

@@ -6,7 +6,12 @@
 package view;
 
 import controller.Controller;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import model.VeterinarioDAO;
@@ -25,7 +30,6 @@ public class AgendarConsulta extends javax.swing.JFrame {
         jLabel11.setText("");
         jTextArea1.setText("");
         jTextField2.setText("");
-        jCheckBox1.setText("Concluir consulta?");
         jFormattedTextField1.setText("");
         Controller.setLabel(jLabel4, jLabel5, jLabel6);
         Controller.setLabelValues();
@@ -33,7 +37,12 @@ public class AgendarConsulta extends javax.swing.JFrame {
         List consultasController = Controller.getAppointmentsAnimal();
         DefaultListModel<String> listModel = new DefaultListModel<>();
         listModel.addAll(consultasController);
+        List appointmentHours = Controller.getAppointmentsHours();
+        DefaultListModel<String> listModelHours = new DefaultListModel<>();
+        listModelHours.addAll(appointmentHours);
         jList1.setModel(listModel);
+        jList2.setModel(listModelHours);
+        jLabel14.setText(Controller.getSelectedTreatment().getNome());
     }
 
     /**
@@ -72,7 +81,6 @@ public class AgendarConsulta extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -122,6 +130,11 @@ public class AgendarConsulta extends javax.swing.JFrame {
         jLabel9.setText("Buscar:");
 
         jTextField2.setText("jTextField1");
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField2KeyTyped(evt);
+            }
+        });
 
         jButton6.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jButton6.setText("Apagar Veterinário");
@@ -161,7 +174,11 @@ public class AgendarConsulta extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel12.setText("Data:");
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("d/M/yy"))));
+        try {
+            jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         jLabel13.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel13.setText("Veterinário:");
@@ -172,8 +189,6 @@ public class AgendarConsulta extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel15.setText("Tratamento:");
-
-        jCheckBox1.setText("jCheckBox1");
 
         jLabel16.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel16.setText("Períodos disponíveis:");
@@ -206,7 +221,7 @@ public class AgendarConsulta extends javax.swing.JFrame {
                                 .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                                 .addComponent(jButton7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton6))
@@ -226,9 +241,7 @@ public class AgendarConsulta extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel10)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jCheckBox1)
-                                            .addComponent(jLabel15))
+                                        .addComponent(jLabel15)
                                         .addGap(18, 18, 18)
                                         .addComponent(jLabel14))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -271,7 +284,7 @@ public class AgendarConsulta extends javax.swing.JFrame {
                     .addComponent(jLabel17))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane4)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
@@ -283,9 +296,7 @@ public class AgendarConsulta extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel15)
-                            .addComponent(jLabel14))
-                        .addGap(18, 18, 18)
-                        .addComponent(jCheckBox1))
+                            .addComponent(jLabel14)))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(32, 32, 32)
                 .addComponent(jButton10)
@@ -386,8 +397,17 @@ public class AgendarConsulta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        TratamentoPrincipal tratamento = new TratamentoPrincipal();
-        tratamento.setVisible(true);
+        Calendar dt = Calendar.getInstance();
+        SimpleDateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            dt.setTime(dataFormat.parse(jFormattedTextField1.getText()));
+            Controller.criarConsulta(dt,
+                    jList2.getSelectedValue(), jTextArea1.getText());
+            JOptionPane.showMessageDialog(null,"Consulta agendada");
+            dispose();
+        } catch (ParseException ex) {
+            Logger.getLogger(AgendarConsulta.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
@@ -404,7 +424,7 @@ public class AgendarConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-            if (JOptionPane.showConfirmDialog(null, "Você ira excluir um veterinario, tem certeza?",
+        if (JOptionPane.showConfirmDialog(null, "Você ira excluir um veterinario, tem certeza?",
                 "Deleção, vamos com calma!", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION) {
             Controller.deletarVeterinario(jTable1);
             Controller.clearSelection(Controller.VETERINARIO);
@@ -413,7 +433,12 @@ public class AgendarConsulta extends javax.swing.JFrame {
 
     private void jTable1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MousePressed
         Controller.setSelected(((GenericTableModel) jTable1.getModel()).getItem(jTable1.getSelectedRow()));
+        jLabel11.setText(Controller.getSelectedVet().getNome());
     }//GEN-LAST:event_jTable1MousePressed
+
+    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+        Controller.atualizarVeterinariosNomesParecidos(jTable1, jTextField2.getText());
+    }//GEN-LAST:event_jTextField2KeyTyped
 
     /**
      * @param args the command line arguments
@@ -470,7 +495,6 @@ public class AgendarConsulta extends javax.swing.JFrame {
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

@@ -121,7 +121,7 @@ public class TratamentoDAO extends DAO {
         PreparedStatement pstm;
 
         try {
-            pstm = TratamentoDAO.getConnection().prepareStatement("UPDETE tratamento "
+            pstm = TratamentoDAO.getConnection().prepareStatement("UPDATE tratamento "
                     + "SET id_animal=?, nome = ?, dataIni = ?, "
                     + "dataFim = ?, terminado = ? WHERE id = ?");
             pstm.setInt(1, tratamento.getIdAnimal());
@@ -143,6 +143,27 @@ public class TratamentoDAO extends DAO {
         try {
             pstm = TratamentoDAO.getConnection().prepareStatement("DELETE FROM tratamento WHERE id = ?");
             pstm.setInt(1, tratamento.getIdTratamento());
+            executeUpdate(pstm);
+
+        } catch (SQLException e) {
+            System.err.println("Exception: " + e.getMessage());
+        }
+    }
+    
+    public void endTreatment(Tratamento tratamento) {
+        PreparedStatement pstm;
+
+        try {
+            pstm = TratamentoDAO.getConnection().prepareStatement("UPDATE tratamento "
+                    + "SET id_animal=?, nome = ?, dataIni = ?, "
+                    + "dataFim = ?, terminado = ? WHERE id = ?");
+            pstm.setInt(1, tratamento.getIdAnimal());
+            pstm.setString(2, tratamento.getNome());
+            pstm.setString(3, "" + tratamento.getDat_ini());
+            pstm.setString(4, "" + tratamento.getDat_fim());
+            pstm.setInt(5, 1);
+            pstm.setInt(6, tratamento.getIdTratamento());
+
             executeUpdate(pstm);
 
         } catch (SQLException e) {
