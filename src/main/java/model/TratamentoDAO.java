@@ -8,14 +8,13 @@ package model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import view.options;
 
 /**
  *
@@ -56,13 +55,8 @@ public class TratamentoDAO extends DAO {
 
     private Tratamento buildObject(ResultSet rs) {
         Tratamento tratamento = null;
-//        DateFormat formatter;
-//        formatter = new SimpleDateFormat("dd/MM/yyyy");
-
         try {
             boolean terminou = rs.getInt("terminado") == 1;
-//            dataInicio = formatter.parse(rs.getString("dataIni"));
-//            dataFim = formatter.parse(rs.getString("dataFim"));
 
             tratamento = new Tratamento(rs.getInt("id"), rs.getInt("id_animal"),
                     rs.getString("nome"), rs.getString("dataIni"), rs.getString("dataFim"), terminou);
@@ -70,9 +64,6 @@ public class TratamentoDAO extends DAO {
         } catch (SQLException e) {
             System.err.println("Exception: " + e.getMessage());
         }
-//        } catch (ParseException ex) {
-//            Logger.getLogger(TratamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
 
         return tratamento;
     }
@@ -99,13 +90,19 @@ public class TratamentoDAO extends DAO {
         return (tratamentos.isEmpty() ? null : tratamentos.get(0));
     }
 
+    public List retrieveByStatus(int id, options.TreatmentOption opt) {
+        return this.retrieve(
+                "SELECT * FROM tratamento WHERE id_animal = " + id + " AND terminado = "
+                + (opt == options.TreatmentOption.ANDAMENTO ? 0 : 1));
+    }
+
     public Tratamento retrieveFirstByAnimalId(int id) {
         List<Tratamento> tratamentos = this.retrieve("SELECT * FROM "
                 + "tratamento WHERE id_animal = " + id);
         return (tratamentos.isEmpty() ? null : tratamentos.get(0));
     }
 
-    public List<Tratamento> retrieveAllByAnimalId(int id) {
+    public List retrieveAllByAnimalId(int id) {
         return this.retrieve("SELECT * FROM tratamento where id_animal = " + id);
     }
 
@@ -149,18 +146,22 @@ public class TratamentoDAO extends DAO {
             System.err.println("Exception: " + e.getMessage());
         }
     }
-    
+
     public void endTreatment(Tratamento tratamento) {
         PreparedStatement pstm;
 
         try {
+            Calendar dt = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String dataFim = sdf.format(dt.getTimeInMillis());
+
             pstm = TratamentoDAO.getConnection().prepareStatement("UPDATE tratamento "
                     + "SET id_animal=?, nome = ?, dataIni = ?, "
                     + "dataFim = ?, terminado = ? WHERE id = ?");
             pstm.setInt(1, tratamento.getIdAnimal());
             pstm.setString(2, tratamento.getNome());
             pstm.setString(3, "" + tratamento.getDat_ini());
-            pstm.setString(4, "" + tratamento.getDat_fim());
+            pstm.setString(4, dataFim);
             pstm.setInt(5, 1);
             pstm.setInt(6, tratamento.getIdTratamento());
 

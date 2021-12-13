@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JToggleButton;
 import model.Animal;
 import model.AnimalDAO;
 import model.Cliente;
@@ -22,7 +23,9 @@ import model.Tratamento;
 import model.TratamentoDAO;
 import model.Veterinario;
 import model.VeterinarioDAO;
+import view.AnimalTableModel;
 import view.GenericTableModel;
+import view.options;
 
 /**
  *
@@ -88,7 +91,7 @@ public class Controller {
     }
 
     public static void atualizarClientesNomesParecidos(JTable table, String nome) {
-        if (!nome.equals("")) {
+        if (!nome.isBlank()) {
             ((GenericTableModel) table.getModel()).addListOfItems(ClienteDAO.getInstance().retrieveBySimilarName(nome));
         } else {
             ((GenericTableModel) table.getModel()).addListOfItems(ClienteDAO.getInstance().retrieveAll());
@@ -96,10 +99,22 @@ public class Controller {
     }
 
     public static void atualizarVeterinariosNomesParecidos(JTable table, String nome) {
-        if (!nome.equals("")) {
+        if (!nome.isBlank()) {
             ((GenericTableModel) table.getModel()).addListOfItems(VeterinarioDAO.getInstance().retrieveBySimilarName(nome));
         } else {
             ((GenericTableModel) table.getModel()).addListOfItems(VeterinarioDAO.getInstance().retrieveAll());
+        }
+    }
+
+    public static void atualizarAnimaisNomeParecidos(JTable table, String text) {
+        if (!text.isBlank() && selectedClient != null) {
+            ((GenericTableModel) table.getModel()).addListOfItems(AnimalDAO.getInstance().retrieveBySimilarName(text, selectedClient.getId()));
+        } else {
+            if (selectedClient == null) {
+                ((GenericTableModel) table.getModel()).addListOfItems(new ArrayList());
+            } else {
+                table.setModel(new AnimalTableModel(AnimalDAO.getInstance().retrieveByClientId(selectedClient.getId())));
+            }
         }
     }
 
@@ -147,7 +162,7 @@ public class Controller {
 
     public static void criarConsulta(Calendar data, String horario, String comentario) {
         ConsultaDAO.getInstance().create(data, horario, comentario, selectedAnimal.getId(),
-                 selectedVet.getIdVeterinario(), selectedTreatment.getIdTratamento(),
+                selectedVet.getIdVeterinario(), selectedTreatment.getIdTratamento(),
                 0);
 
     }
@@ -262,4 +277,17 @@ public class Controller {
                 "18:00"));
     }
 
+    public static void atualizarToggleButtons(JTable table, options.TreatmentOption opt) {
+        switch (opt) {
+            case TODOS:
+                ((GenericTableModel) table.getModel()).addListOfItems(TratamentoDAO.getInstance().retrieveAllByAnimalId(selectedAnimal.getId()));
+                break;
+            case ANDAMENTO:
+                ((GenericTableModel) table.getModel()).addListOfItems(TratamentoDAO.getInstance().retrieveByStatus(selectedAnimal.getId(), options.TreatmentOption.ANDAMENTO));
+                break;
+            default:
+                ((GenericTableModel) table.getModel()).addListOfItems(TratamentoDAO.getInstance().retrieveByStatus(selectedAnimal.getId(), options.TreatmentOption.FINALIZADO));
+                break;
+        }
+    }
 }
