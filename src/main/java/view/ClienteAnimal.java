@@ -179,7 +179,7 @@ public class ClienteAnimal extends javax.swing.JFrame {
         });
 
         jLabel11.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
-        jLabel11.setText("Filtrar espécie:");
+        jLabel11.setText("Filtrar nome:");
 
         jTextField3.setText("jTextField2");
         jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
