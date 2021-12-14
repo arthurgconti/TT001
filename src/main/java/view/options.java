@@ -9,7 +9,11 @@ package view;
  * @author arthurgconti
  */
 public class options {
-    public static enum TreatmentOption{
-        ANDAMENTO,FINALIZADO,TODOS
+
+    public static enum TreatmentOption {
+        ANDAMENTO, FINALIZADO, TODOS
+    }
+    public static enum AppointmentOption{
+        MARCADA,REALIZADA,TODOS,HOJE
     }
 }

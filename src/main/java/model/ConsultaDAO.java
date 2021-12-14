@@ -14,6 +14,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import view.options;
 
 /**
  *
@@ -108,6 +109,12 @@ public class ConsultaDAO extends DAO {
         List<Consulta> consultas = this.retrieve("SELECT * FROM "
                 + "consulta WHERE id_vet = " + idVet);
         return (consultas.isEmpty() ? null : consultas.get(0));
+    }
+
+    public List retrieveByStatus(int id, options.AppointmentOption opt) {
+        return this.retrieve(
+                "SELECT * FROM consulta WHERE id_tratamento = " + id + " AND terminado = "
+                + (opt == options.AppointmentOption.MARCADA ? 0 : 1));
     }
 
     public Consulta retrieveByTreatmentId(int idTreatment) {

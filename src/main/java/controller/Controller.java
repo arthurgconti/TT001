@@ -6,10 +6,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.JToggleButton;
 import model.Animal;
 import model.AnimalDAO;
 import model.Cliente;
@@ -34,7 +34,7 @@ import view.options;
 public class Controller {
 
     /*
-    constantes para lidar com a função clearSelection, basicamente limpar 
+    constantes para lidar cjComboBox1.addom a função clearSelection, basicamente limpar 
     a seleção quando da dispose em um jForm
      */
     public final static int TRATAMENTO = 0;
@@ -287,6 +287,21 @@ public class Controller {
                 break;
             default:
                 ((GenericTableModel) table.getModel()).addListOfItems(TratamentoDAO.getInstance().retrieveByStatus(selectedAnimal.getId(), options.TreatmentOption.FINALIZADO));
+                break;
+        }
+    }
+
+    public static void atualizarFiltrosAppointmentButtons(JTable table, options.AppointmentOption opt) {
+        switch (opt) {
+            case TODOS:
+                ((GenericTableModel) table.getModel()).addListOfItems(ConsultaDAO.getInstance().retrieveAllByTreatmentId(selectedTreatment.getIdTratamento()));
+                break;
+            case MARCADA:
+                ((GenericTableModel) table.getModel()).addListOfItems(ConsultaDAO.getInstance().retrieveByStatus(selectedAnimal.getId(), options.AppointmentOption.MARCADA));
+                break;
+
+            case REALIZADA:
+                ((GenericTableModel) table.getModel()).addListOfItems(ConsultaDAO.getInstance().retrieveByStatus(selectedAnimal.getId(), options.AppointmentOption.REALIZADA));
                 break;
         }
     }
